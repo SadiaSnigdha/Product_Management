@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.cell.*?>
+
+<AnchorPane prefWidth="1400.0" prefHeight="900.0" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.product_management.controller.CreateSalesController"
+            style="-fx-background-color: linear-gradient(to bottom right, #f0f4f7, #d9e6f2);">
+
+    <children>
+        <VBox layoutX="100" layoutY="30" spacing="20" prefWidth="1200"
+              style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
+
+            <padding>
+                <Insets top="30.0" right="30.0" bottom="30.0" left="30.0"/>
+            </padding>
+
+            <children>
+
+                <!-- Title -->
+                <Label text="🛒 Create Sale" alignment="CENTER">
+                    <font>
+                        <Font name="Arial Black" size="32.0"/>
+                    </font>
+                </Label>
+
+                <!-- Product Selector -->
+                <HBox spacing="20">
+                    <children>
+                        <VBox spacing="10">
+                            <Label text="Select Product:"/>
+                            <ComboBox fx:id="productComboBox" promptText="Search Product..." prefWidth="250"/>
+                        </VBox>
+
+                        <VBox spacing="10">
+                            <Label text="Quantity:"/>
+                            <TextField fx:id="quantityField" promptText="Enter Quantity" prefWidth="150"/>
+                        </VBox>
+
+                        <Button fx:id="addToCartButton" text="➕ Add to Cart" onAction="#onAddToCart"
+                                style="-fx-background-color: #1cc88a; -fx-text-fill: white; -fx-font-weight: bold;"
+                                prefHeight="40" prefWidth="150"/>
+                    </children>
+                </HBox>
+
+                <!-- Cart Table -->
+                <TableView fx:id="cartTable" prefHeight="300">
+                    <columns>
+                        <TableColumn fx:id="productNameCol" text="Product" prefWidth="300"/>
+                        <TableColumn fx:id="quantityCol" text="Quantity" prefWidth="150"/>
+                        <TableColumn fx:id="priceCol" text="Price" prefWidth="150"/>
+                        <TableColumn fx:id="subtotalCol" text="Subtotal" prefWidth="150"/>
+                    </columns>
+                </TableView>
+
+                <!-- Customer Search Section -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <children>
+                        <VBox spacing="10">
+                            <Label text="Customer Phone:"/>
+                            <TextField fx:id="phoneField" promptText="Enter Phone Number" prefWidth="250"/>
+                        </VBox>
+                        <Button fx:id="searchButton" text="🔍 Search" onAction="#onSearchCustomer"
+                                style="-fx-background-color: #4e73df; -fx-text-fill: white;"/>
+                        <Button fx:id="addCustomerButton" text="➕ Add Customer" visible="false" onAction="#onAddCustomer"
+                                style="-fx-background-color: #1cc88a; -fx-text-fill: white;"/>
+                    </children>
+                </HBox>
+
+                <!-- Customer Details -->
+                <VBox spacing="10">
+                    <Label text="Customer Details" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+                    <HBox spacing="40">
+                        <VBox spacing="5">
+                            <Label text="Name:"/>
+                            <Label fx:id="customerName" text="-" style="-fx-font-size: 14;"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Email:"/>
+                            <Label fx:id="customerEmail" text="-" style="-fx-font-size: 14;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Total Bill -->
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="💰 Total Bill:" style="-fx-font-size: 16;"/>
+                    <Label fx:id="totalLabel" text="0.0" style="-fx-font-weight: bold; -fx-font-size: 16;"/>
+                </HBox>
+
+                <!-- Confirm Button -->
+                <Button fx:id="sellButton" text="✅ Confirm Sale" onAction="#onConfirmSale"
+                        style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;"
+                        prefWidth="200" prefHeight="40"/>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
