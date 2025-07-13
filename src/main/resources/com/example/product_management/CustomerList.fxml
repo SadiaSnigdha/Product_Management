@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1400.0" style="-fx-background-color: linear-gradient(to bottom right, #e0eafc, #cfdef3);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.product_management.controller.CustomerListController">
+<AnchorPane prefHeight="900.0" prefWidth="1400.0" style="-fx-background-color: linear-gradient(to bottom right, #e0eafc, #cfdef3);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.product_management.controller.CustomerListController">
     <children>
-        <VBox layoutX="27.0" layoutY="107.0" prefHeight="562.0" prefWidth="1348.0">
+        <VBox layoutX="27.0" layoutY="107.0" prefHeight="695.0" prefWidth="1348.0">
             <children>
-                <TableView fx:id="customerTable" prefHeight="562.0" prefWidth="1348.0">
+                <TableView fx:id="customerTable" prefHeight="694.0" prefWidth="1348.0">
                     <columns>
                         <TableColumn fx:id="idColumn" prefWidth="263.0" text="Customer ID" />
                         <TableColumn fx:id="nameColumn" prefWidth="458.0" text="Customer Name" />
@@ -26,9 +26,9 @@
                 </TableView>
             </children>
         </VBox>
-        <Button fx:id="back" layoutX="1150.0" layoutY="710.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="53.0" prefWidth="174.0" style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" text="Back">
+        <Button fx:id="back" layoutX="1269.0" layoutY="829.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="46.0" prefWidth="100.0" style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" text="Back">
             <font>
-                <Font name="Arial Bold" size="23.0" />
+                <Font name="Arial Bold" size="17.0" />
             </font>
         </Button>
       <VBox prefHeight="92.0" prefWidth="1400.0" style="-fx-background-color: #6a11cb; -fx-background-radius: 0 0 20 20;">

@@ -221,6 +221,22 @@ public class CreateSalesController {
         return 0.0;
     }
 
+    @FXML
+    public void onClickBack() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/product_management/Homepage.fxml"));
+            Parent root = loader.load();
+
+            HomeController home = loader.getController();
+            home.setStage(stage);
+
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

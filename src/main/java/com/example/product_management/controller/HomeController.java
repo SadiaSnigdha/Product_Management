@@ -103,4 +103,16 @@ public class HomeController {
             e.printStackTrace();
         }
     }
+    @FXML
+    protected void onBack() throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/product_management/EntryPage.fxml"));
+        Parent root = loader.load();
+
+        EntryController entryController = loader.getController();
+        entryController.setStage(stage);
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 }

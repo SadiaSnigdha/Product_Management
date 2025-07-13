@@ -10,6 +10,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class CustomerListController {
 
     @FXML
@@ -44,17 +49,35 @@ public class CustomerListController {
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        // Load customer data
-        customerTable.setItems(loadCustomers());
+        // Load customer data from DB
+        customerTable.setItems(loadCustomersFromDB());
     }
 
-    private ObservableList<Customer> loadCustomers() {
+    private ObservableList<Customer> loadCustomersFromDB() {
         ObservableList<Customer> customers = FXCollections.observableArrayList();
 
-        // Sample data – এখানে চাইলে তুমি DB থেকে load করতে পারো
-        customers.add(new Customer(1, "Ahsan Kabir", "01700000000", "ahsan@email.com"));
-        customers.add(new Customer(2, "Sadia Snigdha", "01811111111", "snigdha@email.com"));
-        customers.add(new Customer(3, "Tanvir Rahman", "01622222222", "tanvir@email.com"));
+        String url = "jdbc:sqlite:data.db"; // database path
+
+        try {
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM customers");
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String phone = resultSet.getString("phone");
+                String email = resultSet.getString("email");
+
+                customers.add(new Customer(id, name, phone, email));
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return customers;
     }

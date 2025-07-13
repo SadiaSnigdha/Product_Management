@@ -28,9 +28,9 @@ public class EntryController implements Controller {
     private void onHover(MouseEvent event) {
         Button btn = (Button) event.getSource();
         if(btn == loginButton) {
-            btn.setStyle("-fx-background-color: #7a22db; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;");
+            btn.setStyle("-fx-background-color: #009c83; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;");
         } else if (btn == signUpButton) {
-            btn.setStyle("-fx-background-color: #27ae60; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;");
+            btn.setStyle("-fx-background-color: #246a94; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;");
         }
     }
 
@@ -38,9 +38,9 @@ public class EntryController implements Controller {
     private void onExit(MouseEvent event) {
         Button btn = (Button) event.getSource();
         if(btn == loginButton) {
-            btn.setStyle("-fx-background-color: #6a11cb; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;");
+            btn.setStyle("-fx-background-color:  #00c9a7; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;");
         } else if (btn == signUpButton) {
-            btn.setStyle("-fx-background-color: #00c9a7; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;");
+            btn.setStyle("-fx-background-color:  #3498db; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;");
         }
     }
 

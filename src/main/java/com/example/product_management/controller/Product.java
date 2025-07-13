@@ -1,81 +1,76 @@
 package com.example.product_management.controller;
 
-import javafx.beans.property.*;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Product {
-    private IntegerProperty id;
-    private StringProperty name;
-    private StringProperty category;
-    private DoubleProperty price;
-    private IntegerProperty quantity;
-    private StringProperty date;
+    private final StringProperty productId;
+    private final StringProperty productName;
+    private final StringProperty productType;
+    private final StringProperty price;
+    private final StringProperty stock;
+    private final StringProperty date;
 
-    public Product(int id, String name, String category, Double price, int quantity, String date) {
-        this.id = new SimpleIntegerProperty(id);
-        this.name = new SimpleStringProperty(name);
-        this.category = new SimpleStringProperty(category);
-        this.price = new SimpleDoubleProperty(price);
-        this.quantity = new SimpleIntegerProperty(quantity);
+    public Product(String productId, String productName, String productType, String price, String stock, String date) {
+        this.productId = new SimpleStringProperty(productId);
+        this.productName = new SimpleStringProperty(productName);
+        this.productType = new SimpleStringProperty(productType);
+        this.price = new SimpleStringProperty(price);
+        this.stock = new SimpleStringProperty(stock);
         this.date = new SimpleStringProperty(date);
     }
 
-    // Getters
-    public int getId() {
-        return id.get();
+    public StringProperty productIdProperty() {
+        return productId;
     }
-    public String getName() {
-        return name.get();
+    public StringProperty productNameProperty() {
+        return productName;
     }
-    public String getCategory() {
-        return category.get();
+    public StringProperty productTypeProperty() {
+        return productType;
     }
-    public double getPrice() {
+    public StringProperty priceProperty() {
+        return price;
+    }
+    public StringProperty stockProperty() {
+        return stock;
+    }
+    public StringProperty dateProperty() {
+        return date;
+    }
+
+    public String getProductId() {
+        return productId.get();
+    }
+    public String getProductName() {
+        return productName.get();
+    }
+    public String getProductType() {
+        return productType.get();
+    }
+    public String getPrice() {
         return price.get();
     }
-    public int getQuantity() {
-        return quantity.get();
+    public String getStock() {
+        return stock.get();
     }
     public String getDate() {
         return date.get();
     }
 
-    // Setters
-    public void setId(int id) {
-        this.id.set(id);
+    public void setStock(String stock) {
+        this.stock.set(stock);
     }
-    public void setName(String name) {
-        this.name.set(name);
+    public void setProductName(String name) {
+        this.productName.set(name);
     }
-    public void setCategory(String category) {
-        this.category.set(category);
+    public void setProductType(String type) {
+        this.productType.set(type);
     }
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price.set(price);
-    }
-    public void setQuantity(int quantity) {
-        this.quantity.set(quantity);
     }
     public void setDate(String date) {
         this.date.set(date);
-    }
-
-    // Property methods — JavaFX TableView uses these
-    public IntegerProperty idProperty() {
-        return id;
-    }
-    public StringProperty nameProperty() {
-        return name;
-    }
-    public StringProperty categoryProperty() {
-        return category;
-    }
-    public DoubleProperty priceProperty() {
-        return price;
-    }
-    public IntegerProperty quantityProperty() {
-        return quantity;
-    }
-    public StringProperty dateProperty() {
-        return date;
     }
 }

@@ -18,31 +18,24 @@ public class ConnectDB {
         ObservableList<Product> products = FXCollections.observableArrayList();
 
         try {
-            // SQLite database connect
             connection = DriverManager.getConnection("jdbc:sqlite:data.db");
             statement = connection.createStatement();
 
-            // Execute SQL query
             String sqlQuery = "SELECT * FROM products";
             ResultSet rs = statement.executeQuery(sqlQuery);
 
-            // Clear existing list
-            products.clear();
-
-            // Iterate and fetch data
             while (rs.next()) {
                 Product p = new Product(
-                        rs.getInt("id"),
+                        String.valueOf(rs.getInt("id")),
                         rs.getString("name"),
                         rs.getString("category"),
-                        rs.getDouble("price"),
-                        rs.getInt("quantity"),
-                        rs.getString("date")  // Make sure 'date' column exists in your DB
+                        String.valueOf(rs.getDouble("price")),
+                        String.valueOf(rs.getInt("quantity")),
+                        rs.getString("date")
                 );
                 products.add(p);
             }
 
-            // Close connections
             rs.close();
             statement.close();
             connection.close();

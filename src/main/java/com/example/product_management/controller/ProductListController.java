@@ -1,8 +1,6 @@
 package com.example.product_management.controller;
 
 import com.example.product_management.ConnectDB;
-import com.example.product_management.controller.Product;
-
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +16,7 @@ public class ProductListController {
     private TableView<Product> productTable;
 
     @FXML
-    private TableColumn<Product, Integer> idColumn;
+    private TableColumn<Product, String> idColumn;
 
     @FXML
     private TableColumn<Product, String> nameColumn;
@@ -27,10 +25,10 @@ public class ProductListController {
     private TableColumn<Product, String> categoryColumn;
 
     @FXML
-    private TableColumn<Product, Double> priceColumn;
+    private TableColumn<Product, String> priceColumn;
 
     @FXML
-    private TableColumn<Product, Integer> quantityColumn;
+    private TableColumn<Product, String> quantityColumn;
 
     @FXML
     private TableColumn<Product, String> date;
@@ -39,9 +37,11 @@ public class ProductListController {
     private Button back;
 
     private Stage stage;
+
     public String getTitle() {
-        return "Product Management : product list";
+        return "Product Management : Product List";
     }
+
     public void setStage(Stage stage) {
         this.stage = stage;
         stage.setTitle(getTitle());
@@ -49,17 +49,16 @@ public class ProductListController {
 
     @FXML
     public void initialize() {
-        // Set up table columns
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("productType"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        // Load data from DB
         ConnectDB db = new ConnectDB();
         ObservableList<Product> productList = db.initDB();
+
         productTable.setItems(productList);
     }
 
@@ -79,5 +78,4 @@ public class ProductListController {
             e.printStackTrace();
         }
     }
-
 }
