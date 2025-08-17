@@ -15,10 +15,10 @@ public class HelloApplication extends javafx.application.Application {
 
         Scene scene = new Scene(loader.load());
 
-        EntryController homeController = loader.getController();
-        homeController.setStage(stage);
+        EntryController entryController = loader.getController();
+        entryController.setStage(stage);
 
-        stage.setTitle(homeController.getTitle());
+        stage.setTitle(entryController.getTitle());
         stage.setScene(scene);
         stage.setWidth(1415);
         stage.setHeight(1000);

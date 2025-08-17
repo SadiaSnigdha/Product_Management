@@ -18,7 +18,6 @@
 
 <BorderPane style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.product_management.controller.LoginController">
 
-    <!-- Header -->
     <top>
         <HBox alignment="CENTER" prefHeight="100" style="-fx-background-color: transparent;">
             <children>
@@ -31,7 +30,6 @@
         </HBox>
     </top>
 
-    <!-- Form Area -->
     <center>
         <VBox alignment="CENTER" spacing="30" BorderPane.alignment="CENTER">
             <children>
@@ -58,11 +56,12 @@
                      <effect>
                         <DropShadow />
                      </effect></PasswordField>
+                        <Hyperlink fx:id="forgotLink" onAction="#goToForgotPassword" style="-fx-text-fill: #d1b3ff; -fx-font-size: 13px;" text="Forgot your password?" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                        </Hyperlink>
 
-                        <Hyperlink style="-fx-text-fill: #d1b3ff; -fx-font-size: 13px;" text="Forgot your password?" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font></Hyperlink>
                     </children>
                     <columnConstraints>
                         <ColumnConstraints />

@@ -21,12 +21,12 @@
             <children>
                 <TableView fx:id="productTable" prefHeight="679.0" prefWidth="1340.0">
                     <columns>
-                        <TableColumn fx:id="idColumn" prefWidth="200.0" text="Product ID" />
-                        <TableColumn fx:id="nameColumn" prefWidth="300.0" text="Product Name" />
-                        <TableColumn fx:id="categoryColumn" prefWidth="250.0" text="Category" />
-                        <TableColumn fx:id="priceColumn" prefWidth="200.0" text="Price" />
-                        <TableColumn fx:id="quantityColumn" prefWidth="183.0" text="Quantity" />
-                  <TableColumn fx:id="date" prefWidth="234.0" text="Date" />
+                        <TableColumn fx:id="idColumn" prefWidth="130.0" text="Product ID" />
+                        <TableColumn fx:id="nameColumn" prefWidth="251.0" text="Product Name" />
+                        <TableColumn fx:id="categoryColumn" prefWidth="220.0" text="Category" />
+                        <TableColumn fx:id="priceColumn" prefWidth="217.0" text="Price" />
+                        <TableColumn fx:id="quantityColumn" prefWidth="251.0" text="Quantity" />
+                        <TableColumn fx:id="expireDateColumn" prefWidth="256.0" text="Expire Date" />
                     </columns>
                     <effect>
                         <DropShadow color="#aaaaaa" offsetY="5" radius="10" />
@@ -42,10 +42,11 @@
         </VBox>
 
         <Button fx:id="back" layoutX="1240.0" layoutY="839.0" onAction="#onClickBack" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" text="Back" />
-      <HBox prefHeight="100.0" prefWidth="1453.0" style="-fx-background-color: #6a11cb; -fx-background-radius: 0 0 20 20;">
-         <children>
-            <Label prefHeight="100.0" prefWidth="271.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 26px;" text="  🛒Product List" textAlignment="JUSTIFY" />
-         </children>
-      </HBox>
+
+        <HBox prefHeight="100.0" prefWidth="1453.0" style="-fx-background-color: #6a11cb; -fx-background-radius: 0 0 20 20;">
+            <children>
+                <Label prefHeight="100.0" prefWidth="271.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 26px;" text="  🛒 Product List" textAlignment="JUSTIFY" />
+            </children>
+        </HBox>
     </children>
 </AnchorPane>

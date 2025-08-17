@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1400.0" style="-fx-background-color: linear-gradient(to bottom right, #e0eafc, #cfdef3);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.product_management.controller.StockController">
+    <children>
+
+        <!-- Header -->
+        <VBox prefHeight="92.0" prefWidth="1400.0" style="-fx-background-color: #6a11cb; -fx-background-radius: 0 0 20 20;">
+            <children>
+                <Label prefHeight="92.0" prefWidth="400.0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 26px;" text="📦 View Stock" />
+            </children>
+        </VBox>
+
+        <!-- Table -->
+        <VBox layoutX="27.0" layoutY="107.0" prefHeight="695.0" prefWidth="1348.0">
+            <children>
+                <TableView fx:id="viewStock" prefHeight="694.0" prefWidth="1348.0">
+                    <columns>
+                        <TableColumn fx:id="idColumn" prefWidth="193.0" text="Entry ID" />
+                        <TableColumn fx:id="productIdColumn" prefWidth="257.0" text="Product ID" />
+                        <TableColumn fx:id="nameColumn" prefWidth="299.0" text="Product Name" />
+                        <TableColumn fx:id="quantityColumn" prefWidth="277.0" text="Quantity" />
+                        <TableColumn fx:id="dateColumn" prefWidth="321.0" text="Date" />
+                    </columns>
+                    <effect>
+                        <DropShadow />
+                    </effect>
+                </TableView>
+            </children>
+        </VBox>
+
+        <!-- Back Button -->
+        <Button fx:id="back" layoutX="1269.0" layoutY="829.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="46.0" prefWidth="100.0" style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" text="Back">
+            <font>
+                <Font name="Arial Bold" size="17.0" />
+            </font>
+        </Button>
+
+    </children>
+</AnchorPane>

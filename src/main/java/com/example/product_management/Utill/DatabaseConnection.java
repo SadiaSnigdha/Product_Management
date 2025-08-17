@@ -1,0 +1,48 @@
+package com.example.product_management.Utill;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DatabaseConnection {
+    private static DatabaseConnection instance; // singleton
+    private Connection connection;
+    private final String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/data.db";
+
+    private DatabaseConnection() throws SQLException {
+        openNewConnection();
+    }
+
+    // নতুন connection ওপেন করার জন্য আলাদা মেথড
+    private void openNewConnection() throws SQLException {
+        try {
+            connection = DriverManager.getConnection(url);
+            System.out.println("Connected to database (Singleton).");
+        } catch (SQLException e) {
+            throw new SQLException("Failed to connect to database: " + e.getMessage());
+        }
+    }
+
+    public static DatabaseConnection getInstance() throws SQLException {
+        if (instance == null) {
+            instance = new DatabaseConnection();
+        }
+        return instance;
+    }
+
+    public Connection getConnection() throws SQLException {
+        // যদি connection null বা বন্ধ থাকে, নতুন connection তৈরি করো
+        if (connection == null || connection.isClosed()) {
+            System.out.println("Reopening closed database connection...");
+            openNewConnection();
+        }
+        return connection;
+    }
+
+    public void closeConnection() throws SQLException {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+            System.out.println("Database connection closed.");
+        }
+    }
+}

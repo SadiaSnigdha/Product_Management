@@ -1,5 +1,6 @@
 package com.example.product_management.controller;
 
+import com.example.product_management.Utill.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,8 +12,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CustomerListController {
@@ -39,30 +40,39 @@ public class CustomerListController {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+        if (this.stage != null) {
+            this.stage.setTitle("Product Management: Customer List");
+            this.stage.setOnCloseRequest(event -> {
+                try {
+                    DatabaseConnection.getInstance().closeConnection();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     @FXML
     public void initialize() {
-        // Setup column mappings
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        // Load customer data from DB
-        customerTable.setItems(loadCustomersFromDB());
+        try {
+            customerTable.setItems(loadCustomersFromDB());
+        } catch (SQLException e) {
+            showAlert("Error", "Failed to load customers: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
-    private ObservableList<Customer> loadCustomersFromDB() {
+    private ObservableList<Customer> loadCustomersFromDB() throws SQLException {
         ObservableList<Customer> customers = FXCollections.observableArrayList();
 
-        String url = "jdbc:sqlite:data.db"; // database path
-
-        try {
-            Connection connection = DriverManager.getConnection(url);
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM customers");
-
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM customers")) {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
@@ -71,12 +81,6 @@ public class CustomerListController {
 
                 customers.add(new Customer(id, name, phone, email));
             }
-
-            resultSet.close();
-            statement.close();
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return customers;
@@ -94,9 +98,17 @@ public class CustomerListController {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Error", "Failed to load homepage: " + e.getMessage());
         }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

@@ -19,12 +19,32 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class OrderHistoryController {
+public class StockController {
+
+    @FXML
+    private TableView<StockEntry> viewStock;
+
+    @FXML
+    private TableColumn<StockEntry, Integer> idColumn;
+
+    @FXML
+    private TableColumn<StockEntry, Integer> productIdColumn;
+
+    @FXML
+    private TableColumn<StockEntry, String> nameColumn;
+
+    @FXML
+    private TableColumn<StockEntry, Integer> quantityColumn;
+
+    @FXML
+    private TableColumn<StockEntry, String> dateColumn;
+
+    private final ObservableList<StockEntry> stockEntries = FXCollections.observableArrayList();
 
     private Stage stage;
 
     public String getTitle() {
-        return "Product Management: Order History";
+        return "Product Management: View Stock";
     }
 
     public void setStage(Stage stage) {
@@ -41,27 +61,6 @@ public class OrderHistoryController {
         }
     }
 
-    @FXML
-    private TableView<ProductOrderSummary> productOrderTable;
-
-    @FXML
-    private TableColumn<ProductOrderSummary, String> customerNameColumn;
-
-    @FXML
-    private TableColumn<ProductOrderSummary, String> phoneNumberColumn;
-
-    @FXML
-    private TableColumn<ProductOrderSummary, String> orderDateColumn;
-
-    @FXML
-    private TableColumn<ProductOrderSummary, Integer> productIdColumn;
-
-    @FXML
-    private TableColumn<ProductOrderSummary, String> productNameColumn;
-
-    @FXML
-    private TableColumn<ProductOrderSummary, Integer> quantityColumn;
-
     private Connection getConnection() throws SQLException {
         Connection conn = DatabaseConnection.getInstance().getConnection();
         if (conn.isClosed()) {
@@ -70,53 +69,49 @@ public class OrderHistoryController {
         return conn;
     }
 
-    private ObservableList<ProductOrderSummary> getOrderHistory() throws SQLException {
-        ObservableList<ProductOrderSummary> list = FXCollections.observableArrayList();
+    private void loadStockEntriesFromDB() throws SQLException {
+        stockEntries.clear();
         String sql = """
             SELECT 
-                c.name AS customer_name,
-                c.phone AS phone_number,
-                o.order_date AS order_date,
-                p.id AS product_id,
-                p.name AS product_name,
-                oi.quantity AS quantity
-            FROM order_items oi
-            JOIN orders o ON oi.order_id = o.id
-            JOIN customers c ON o.customer_id = c.id
-            JOIN products p ON oi.product_id = p.id
-            ORDER BY o.order_date DESC;
+                pe.id, 
+                pe.product_id, 
+                p.name AS product_name, 
+                pe.quantity, 
+                pe.date
+            FROM product_entries pe
+            JOIN products p ON pe.product_id = p.id
+            ORDER BY pe.id ASC;
         """;
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new ProductOrderSummary(
-                        rs.getString("customer_name"),
-                        rs.getString("phone_number"),
-                        rs.getString("order_date"),
+                StockEntry entry = new StockEntry(
+                        rs.getInt("id"),
                         rs.getInt("product_id"),
                         rs.getString("product_name"),
-                        rs.getInt("quantity")
-                ));
+                        rs.getInt("quantity"),
+                        rs.getString("date")
+                );
+                stockEntries.add(entry);
             }
+            viewStock.setItems(stockEntries);
         }
-        return list;
     }
 
     @FXML
-    private void initialize() {
-        customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        orderDateColumn.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
-        productIdColumn.setCellValueFactory(new PropertyValueFactory<>("productId"));
-        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+    public void initialize() {
+        idColumn.setCellValueFactory(data -> data.getValue().idProperty().asObject());
+        productIdColumn.setCellValueFactory(data -> data.getValue().productIdProperty().asObject());
+        nameColumn.setCellValueFactory(data -> data.getValue().productNameProperty());
+        quantityColumn.setCellValueFactory(data -> data.getValue().quantityProperty().asObject());
+        dateColumn.setCellValueFactory(data -> data.getValue().dateProperty());
 
         try {
-            productOrderTable.setItems(getOrderHistory());
+            loadStockEntriesFromDB();
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load order history: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load stock entries: " + e.getMessage());
         }
     }
 

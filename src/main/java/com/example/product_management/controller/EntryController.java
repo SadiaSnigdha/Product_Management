@@ -18,7 +18,7 @@ public class EntryController implements Controller {
     private Button loginButton;
 
     @FXML
-    private Button signUpButton; // SignUp বাটনের জন্য
+    private Button signUpButton;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -66,11 +66,5 @@ public class EntryController implements Controller {
             System.out.println("Login Error");
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    protected void onSignUpClick() throws IOException {
-        // এখানেও তুমি নতুন scene লোড করতে পারো, যদি সাইন আপ page থাকে
-        System.out.println("Sign Up clicked!");
     }
 }

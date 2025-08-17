@@ -11,7 +11,6 @@
 
 <BorderPane prefHeight="900.0" prefWidth="1400.0" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.product_management.controller.EntryController">
 
-    <!-- Left Side Panel -->
     <left>
         <AnchorPane prefHeight="900.0" prefWidth="700.0" style="-fx-background-color: #5a3f91;">
             <children>
@@ -38,8 +37,7 @@
                         <HBox alignment="CENTER" spacing="30" />
                     </children>
                 </VBox>
-                    <Button fx:id="signUpButton" layoutX="156.0" layoutY="485.0" onAction="#onSignUpClick" onMouseEntered="#onHover" onMouseExited="#onExit" prefHeight="68.0" prefWidth="361.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 20; -fx-font-weight: bold; -fx-background-radius: 30;" text="Sign Up" />
-                    <Button fx:id="loginButton" layoutX="149.0" layoutY="350.0" onAction="#onLoginClick" onMouseEntered="#onHover" onMouseExited="#onExit" prefHeight="68.0" prefWidth="361.0" style="-fx-background-color: #00c9a7; -fx-text-fill: white; -fx-font-size: 20; -fx-font-weight: bold; -fx-background-radius: 30;" text="Login">
+                    <Button fx:id="loginButton" layoutX="146.0" layoutY="450.0" onAction="#onLoginClick" onMouseEntered="#onHover" onMouseExited="#onExit" prefHeight="68.0" prefWidth="361.0" style="-fx-background-color: #00c9a7; -fx-text-fill: white; -fx-font-size: 20; -fx-font-weight: bold; -fx-background-radius: 30;" text="Login">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>

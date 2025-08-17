@@ -1,72 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1400.0" style="-fx-background-color: linear-gradient(to bottom right, #e0eafc, #cfdef3);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.product_management.controller.AddProductController">
+<AnchorPane prefHeight="1000.0" prefWidth="1400.0"
+            style="-fx-background-color: linear-gradient(to bottom right, #e0eafc, #cfdef3);"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.product_management.controller.AddProductController">
 
     <children>
-        <VBox layoutX="-6.0" layoutY="94.0" prefHeight="589.0" prefWidth="1410.0" spacing="10.0">
-            <padding>
-                <Insets bottom="15" left="15" right="15" top="15" />
-            </padding>
-
+        <VBox spacing="20" layoutX="100" layoutY="100" prefWidth="1200" prefHeight="800" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 40;">
             <children>
-                <TableView fx:id="productTable" prefHeight="702.0" prefWidth="1380.0">
-                    <columns>
-                        <TableColumn fx:id="productIdColumn" prefWidth="218.0" text="Product ID" />
-                        <TableColumn fx:id="productNameColumn" prefWidth="315.0" text="Product Name" />
-                        <TableColumn fx:id="categoryColumn" prefWidth="260.0" text="category " />
-                        <TableColumn fx:id="priceColumn" prefWidth="218.0" text="Price" />
-                        <TableColumn fx:id="quantityColumn" prefWidth="182.0" text="quantity " />
-                        <TableColumn fx:id="dateColumn" prefWidth="185.0" text="Date" />
-                    </columns>
-                    <effect>
-                        <DropShadow color="#a6a6a6" offsetY="5.0" radius="10" />
-                    </effect>
-                    <style>
-                        -fx-background-radius: 10;
-                        -fx-border-radius: 10;
-                        -fx-border-color: #cccccc;
-                        -fx-table-header-border-color: #6a11cb;
-                        -fx-font-size: 14px;
-                    </style>
-                </TableView>
+
+                <Label text="➕ Add Product" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #6a11cb;" />
+
+                <GridPane hgap="20" vgap="20" prefWidth="1100" prefHeight="600">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="200" />
+                        <ColumnConstraints minWidth="700" />
+                    </columnConstraints>
+
+                    <children>
+                        <Label text="Product ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                        <TextField fx:id="productId" promptText="Enter product ID" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                        <Label text="Product Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                        <TextField fx:id="productName" promptText="Enter product name" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                        <Label text="Category:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                        <TextField fx:id="category" promptText="Enter category" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                        <Label text="Price ($):" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                        <TextField fx:id="price" promptText="Enter price" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                        <Label text="Quantity:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                        <TextField fx:id="quantity" promptText="Enter quantity" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                        <Label text="Date:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                        <TextField fx:id="date" promptText="Enter adding date (DD-MM-YYYY)" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+                        <Label text="Expire Date:" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                        <TextField fx:id="expireDate" promptText="Enter expire date (DD-MM-YYYY)" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+                    </children>
+                </GridPane>
+
+                <HBox spacing="30" style="-fx-alignment: center;">
+                    <Button fx:id="add" text="Add" onAction="#onClickAdd" style="-fx-background-color: #6a11cb; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" prefWidth="140" prefHeight="50" />
+                    <Button fx:id="back" text="Back" onAction="#onClickBack" style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" prefWidth="140" prefHeight="50" />
+                </HBox>
+
             </children>
         </VBox>
-
-        <Label layoutX="81.0" layoutY="711.0" text="Product ID:" />
-        <TextField fx:id="productId" layoutX="180.0" layoutY="706.0" prefWidth="200.0" />
-
-        <Label layoutX="56.0" layoutY="770.0" text="Product Name:" />
-        <TextField fx:id="productName" layoutX="180.0" layoutY="765.0" prefWidth="200.0" />
-
-        <Label layoutX="86.0" layoutY="823.0" text="Category:" />
-        <TextField fx:id="category" layoutX="180.0" layoutY="818.0" prefWidth="200.0" />
-
-        <Label layoutX="967.0" layoutY="711.0" text="Price ($):" />
-        <TextField fx:id="price" layoutX="1040.0" layoutY="706.0" prefWidth="200.0" />
-
-        <Label layoutX="965.0" layoutY="770.0" text="Quantity:" />
-        <TextField fx:id="quantity" layoutX="1040.0" layoutY="765.0" prefWidth="200.0" />
-
-        <Label layoutX="986.0" layoutY="823.0" text="Date:" />
-        <TextField fx:id="date" layoutX="1040.0" layoutY="818.0" prefWidth="200.0" />
-
-        <Button fx:id="add" layoutX="211.0" layoutY="900.0" onAction="#onClickAdd" prefHeight="50.0" prefWidth="111.0" style="-fx-background-color: #6a11cb; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" text="Add" />
-
-        <Button fx:id="back" layoutX="1095.0" layoutY="900.0" onAction="#onClickBack" prefHeight="50.0" prefWidth="111.0" style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" text="Back" />
-      <VBox layoutX="-5.0" layoutY="-18.0" prefHeight="97.0" prefWidth="1530.0" style="-fx-background-color: #6a11cb; -fx-background-radius: 25;">
-         <children>
-            <Label prefHeight="122.0" prefWidth="205.0" style="-fx-text-fill: white; -fx-font-size: 25; -fx-font-weight: bold;" text="   ➕Add Product" />
-         </children>
-      </VBox>
     </children>
 </AnchorPane>

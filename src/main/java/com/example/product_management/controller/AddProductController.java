@@ -1,28 +1,21 @@
 package com.example.product_management.controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.example.product_management.Utill.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AddProductController {
-
-    @FXML private TableView<Product> productTable;
-
-    @FXML private TableColumn<Product, String> productIdColumn;
-    @FXML private TableColumn<Product, String> productNameColumn;
-    @FXML private TableColumn<Product, String> categoryColumn;
-    @FXML private TableColumn<Product, String> priceColumn;
-    @FXML private TableColumn<Product, String> quantityColumn;
-    @FXML private TableColumn<Product, String> dateColumn;
 
     @FXML private TextField productId;
     @FXML private TextField productName;
@@ -30,124 +23,155 @@ public class AddProductController {
     @FXML private TextField price;
     @FXML private TextField quantity;
     @FXML private TextField date;
+    @FXML private TextField expireDate;
 
-    private ObservableList<Product> productList = FXCollections.observableArrayList();
     private Stage stage;
 
     public String getTitle() {
-        return "Product Management : Add Product";
+        return "Product Management: Add Product";
     }
 
     public void setStage(Stage stage) {
         this.stage = stage;
-        stage.setTitle(getTitle());
+        if (this.stage != null) {
+            this.stage.setTitle(getTitle());
+            this.stage.setOnCloseRequest(event -> {
+                try {
+                    DatabaseConnection.getInstance().closeConnection();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
-    @FXML
-    public void initialize() {
-        productIdColumn.setCellValueFactory(data -> data.getValue().productIdProperty());
-        productNameColumn.setCellValueFactory(data -> data.getValue().productNameProperty());
-        categoryColumn.setCellValueFactory(data -> data.getValue().productTypeProperty());
-        priceColumn.setCellValueFactory(data -> data.getValue().priceProperty());
-        quantityColumn.setCellValueFactory(data -> data.getValue().stockProperty());
-        dateColumn.setCellValueFactory(data -> data.getValue().dateProperty());
-
-        refreshTableFromDB();
+    private Connection getConnection() throws SQLException {
+        Connection conn = DatabaseConnection.getInstance().getConnection();
+        if (conn == null || conn.isClosed()) {
+            throw new SQLException("Database connection is closed or null");
+        }
+        return conn;
     }
 
     @FXML
     private void onClickAdd() {
-        if (productId.getText().isEmpty() || productName.getText().isEmpty()) {
+        String id = productId.getText().trim();
+        String name = productName.getText().trim();
+        String categoryValue = category.getText().trim();
+        String priceValue = price.getText().trim();
+        String quantityValue = quantity.getText().trim();
+        String dateValue = date.getText().trim();
+        String expiryValue = expireDate.getText().trim();
+
+        if (id.isEmpty() || name.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Input Error", "Product ID and Name are required.");
             return;
         }
 
-        String id = productId.getText();
-        String name = productName.getText();
-        String categoryValue = category.getText();
-        String priceValue = price.getText();
-        String quantityValue = quantity.getText();
-        String dateValue = date.getText();
+        int idInt;
+        double priceDouble;
+        int quantityInt;
 
-        String url = "jdbc:sqlite:data.db";
+        try {
+            idInt = Integer.parseInt(id);
+            priceDouble = priceValue.isEmpty() ? 0.0 : Double.parseDouble(priceValue);
+            quantityInt = quantityValue.isEmpty() ? 0 : Integer.parseInt(quantityValue);
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Input Error", "Product ID, Price, and Quantity must be valid numbers.");
+            return;
+        }
 
-        try (Connection conn = DriverManager.getConnection(url)) {
-            String checkQuery = "SELECT quantity FROM products WHERE id = ?";
-            PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
-            checkStmt.setString(1, id);
+        Connection conn = null;
+
+        try {
+            conn = getConnection();
+
+            // Check product exists
+            PreparedStatement checkStmt = conn.prepareStatement("SELECT quantity FROM products WHERE id = ?");
+            checkStmt.setInt(1, idInt);
             ResultSet rs = checkStmt.executeQuery();
 
             if (rs.next()) {
+                // Update existing product
                 int existingQty = rs.getInt("quantity");
-                int newQty = existingQty + Integer.parseInt(quantityValue);
+                int newQty = existingQty + quantityInt;
 
-                String updateQuery = "UPDATE products SET quantity = ? WHERE id = ?";
-                PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
+                PreparedStatement updateStmt = conn.prepareStatement(
+                        "UPDATE products SET quantity = ?, expiry_date = ? WHERE id = ?");
                 updateStmt.setInt(1, newQty);
-                updateStmt.setString(2, id);
-                updateStmt.executeUpdate();
+                updateStmt.setString(2, expiryValue.isEmpty() ? null : expiryValue);
+                updateStmt.setInt(3, idInt);
+                int rowsAffected = updateStmt.executeUpdate();
 
-                showAlert(Alert.AlertType.INFORMATION, "Stock Updated", "Existing product quantity has been updated.");
+                if (rowsAffected > 0) {
+                    showAlert(Alert.AlertType.INFORMATION, "Stock Updated", "Existing product quantity has been updated.");
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Update Error", "Failed to update product quantity.");
+                }
+
+                updateStmt.close();
             } else {
-                String insertQuery = "INSERT INTO products (id, name, category, price, quantity, date) VALUES (?, ?, ?, ?, ?, ?)";
-                PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
-                insertStmt.setString(1, id);
+                // Insert new product
+                PreparedStatement insertStmt = conn.prepareStatement(
+                        "INSERT INTO products (id, name, category, price, quantity, date, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                insertStmt.setInt(1, idInt);
                 insertStmt.setString(2, name);
-                insertStmt.setString(3, categoryValue);
-                insertStmt.setString(4, priceValue);
-                insertStmt.setInt(5, Integer.parseInt(quantityValue));
-                insertStmt.setString(6, dateValue);
-                insertStmt.executeUpdate();
+                insertStmt.setString(3, categoryValue.isEmpty() ? null : categoryValue);
+                insertStmt.setDouble(4, priceDouble);
+                insertStmt.setInt(5, quantityInt);
+                insertStmt.setString(6, dateValue.isEmpty() ? null : dateValue);
+                insertStmt.setString(7, expiryValue.isEmpty() ? null : expiryValue);
 
-                showAlert(Alert.AlertType.INFORMATION, "Product Added", "New product has been added.");
+                int rowsAffected = insertStmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    showAlert(Alert.AlertType.INFORMATION, "Product Added", "New product has been added.");
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Insert Error", "Failed to add new product.");
+                }
+
+                insertStmt.close();
             }
+
+            // Insert into product_entries
+            PreparedStatement entryStmt = conn.prepareStatement(
+                    "INSERT INTO product_entries (product_id, quantity, date) VALUES (?, ?, ?)");
+            entryStmt.setInt(1, idInt);
+            entryStmt.setInt(2, quantityInt);
+            entryStmt.setString(3, dateValue.isEmpty() ? null : dateValue);
+
+            int entryRows = entryStmt.executeUpdate();
+            if (entryRows == 0) {
+                showAlert(Alert.AlertType.ERROR, "Insert Error", "Failed to add product entry.");
+            }
+
+            entryStmt.close();
+            checkStmt.close();
+            rs.close();
 
             clearFields();
-            refreshTableFromDB();
-        } catch (Exception e) {
+
+        } catch (SQLException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to access or update the database.");
-        }
-    }
-
-    private void refreshTableFromDB() {
-        productList.clear();
-        String url = "jdbc:sqlite:data.db";
-
-        try (Connection conn = DriverManager.getConnection(url)) {
-            String query = "SELECT * FROM products";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-                Product product = new Product(
-                        String.valueOf(rs.getInt("id")),
-                        rs.getString("name"),
-                        rs.getString("category"),
-                        String.valueOf(rs.getDouble("price")),
-                        String.valueOf(rs.getInt("quantity")),
-                        rs.getString("date")
-                );
-                productList.add(product);
-            }
-
-            productTable.setItems(productList);
-        } catch (Exception e) {
-            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to access or update the database: " + e.getMessage());
         }
     }
 
     @FXML
-    private void onClickBack() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/product_management/Homepage.fxml"));
-        Parent root = loader.load();
+    private void onClickBack() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/product_management/Homepage.fxml"));
+            Parent root = loader.load();
 
-        HomeController home = loader.getController();
-        home.setStage(stage);
+            HomeController home = loader.getController();
+            home.setStage(stage);
 
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Product Management: Home");
+            stage.show();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load Home page: " + e.getMessage());
+        }
     }
 
     private void clearFields() {
@@ -157,6 +181,7 @@ public class AddProductController {
         price.clear();
         quantity.clear();
         date.clear();
+        expireDate.clear();
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {

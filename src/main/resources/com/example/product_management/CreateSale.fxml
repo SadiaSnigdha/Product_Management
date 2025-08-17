@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1400.0" style="-fx-background-color: linear-gradient(to bottom right, #c0d4e0, #a6c1de);" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.example.product_management.controller.CreateSalesController">
+<AnchorPane prefHeight="900.0" prefWidth="1400.0" style="-fx-background-color: linear-gradient(to bottom right, #c0d4e0, #a6c1de);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.product_management.controller.CreateSalesController">
 
     <children>
         <VBox layoutX="100" layoutY="30" prefWidth="1200" spacing="20" style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
@@ -23,31 +23,32 @@
 
             <children>
 
-                <!-- Title -->
                 <Label alignment="CENTER" text="🛒 Create Sale">
                     <font>
                         <Font name="Arial Black" size="32.0" />
                     </font>
                 </Label>
 
-                <!-- Product Selector -->
-                <HBox spacing="20">
+                <HBox prefWidth="699.0" spacing="20">
                     <children>
-                        <VBox spacing="10">
+                        <VBox spacing="10" prefWidth="280">
                             <Label text="Select Product:" />
                             <ComboBox fx:id="productComboBox" prefWidth="250" promptText="Search Product..." />
+                            <Label text="Date (d-m-y):" />
+                            <TextField fx:id="date" prefWidth="250" promptText="d-m-y" />
                         </VBox>
 
-                        <VBox spacing="10">
+                        <VBox spacing="10" prefWidth="170">
                             <Label text="Quantity:" />
                             <TextField fx:id="quantityField" prefWidth="150" promptText="Enter Quantity" />
                         </VBox>
 
-                        <Button fx:id="addToCartButton" onAction="#onAddToCart" prefHeight="40" prefWidth="150" style="-fx-background-color: #1cc88a; -fx-text-fill: white; -fx-font-weight: bold;" text="➕ Add to Cart" />
+                        <VBox alignment="BOTTOM_CENTER" prefWidth="160">
+                            <Button fx:id="addToCartButton" onAction="#onAddToCart" prefHeight="40" prefWidth="150" style="-fx-background-color: #1cc88a; -fx-text-fill: white; -fx-font-weight: bold;" text="➕ Add to Cart" />
+                        </VBox>
                     </children>
                 </HBox>
 
-                <!-- Cart Table -->
                 <TableView fx:id="cartTable" prefHeight="300">
                     <columns>
                         <TableColumn fx:id="productNameCol" prefWidth="411.0" text="Product" />
@@ -57,7 +58,6 @@
                     </columns>
                 </TableView>
 
-                <!-- Customer Search Section -->
                 <HBox alignment="CENTER_LEFT" spacing="15">
                     <children>
                         <VBox spacing="10">
@@ -69,7 +69,6 @@
                     </children>
                 </HBox>
 
-                <!-- Customer Details -->
                 <VBox spacing="10">
                     <Label style="-fx-font-size: 16; -fx-font-weight: bold;" text="Customer Details" />
                     <HBox spacing="40">
@@ -84,17 +83,17 @@
                     </HBox>
                 </VBox>
 
-                <!-- Total Bill -->
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <Label style="-fx-font-size: 16;" text="💰 Total Bill:" />
                     <Label fx:id="totalLabel" style="-fx-font-weight: bold; -fx-font-size: 16;" text="0.0" />
                 </HBox>
 
-                <!-- Confirm Button -->
                 <Button fx:id="sellButton" onAction="#onConfirmSale" prefHeight="40" prefWidth="200" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="✅ Confirm Sale" />
 
             </children>
         </VBox>
-      <Button fx:id="back" layoutX="1211.0" layoutY="846.0" mnemonicParsing="false" onAction="#onClickBack" style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold;" text="Back" />
+
+        <Button fx:id="back" layoutX="1211.0" layoutY="846.0" mnemonicParsing="false" onAction="#onClickBack" style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold;" text="Back" />
+
     </children>
 </AnchorPane>

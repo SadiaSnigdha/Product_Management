@@ -1,76 +1,37 @@
 package com.example.product_management.controller;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 public class Product {
-    private final StringProperty productId;
-    private final StringProperty productName;
-    private final StringProperty productType;
-    private final StringProperty price;
-    private final StringProperty stock;
-    private final StringProperty date;
+    private String productId;
+    private String productName;
+    private String productType;
+    private String price;
+    private String stock;
+    private String date;
+    private String expiryDate;
 
-    public Product(String productId, String productName, String productType, String price, String stock, String date) {
-        this.productId = new SimpleStringProperty(productId);
-        this.productName = new SimpleStringProperty(productName);
-        this.productType = new SimpleStringProperty(productType);
-        this.price = new SimpleStringProperty(price);
-        this.stock = new SimpleStringProperty(stock);
-        this.date = new SimpleStringProperty(date);
-    }
-
-    public StringProperty productIdProperty() {
-        return productId;
-    }
-    public StringProperty productNameProperty() {
-        return productName;
-    }
-    public StringProperty productTypeProperty() {
-        return productType;
-    }
-    public StringProperty priceProperty() {
-        return price;
-    }
-    public StringProperty stockProperty() {
-        return stock;
-    }
-    public StringProperty dateProperty() {
-        return date;
+    public Product(String productId, String productName, String productType, String price, String stock, String date, String expiryDate) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productType = productType;
+        this.price = price;
+        this.stock = stock;
+        this.date = date;
+        this.expiryDate = expiryDate;
     }
 
-    public String getProductId() {
-        return productId.get();
-    }
-    public String getProductName() {
-        return productName.get();
-    }
-    public String getProductType() {
-        return productType.get();
-    }
-    public String getPrice() {
-        return price.get();
-    }
-    public String getStock() {
-        return stock.get();
-    }
-    public String getDate() {
-        return date.get();
-    }
+    public String getProductId() { return productId; }
+    public String getProductName() { return productName; }
+    public String getProductType() { return productType; }
+    public String getPrice() { return price; }
+    public String getStock() { return stock; }
+    public String getDate() { return date; }
+    public String getExpiryDate() { return expiryDate; }
 
-    public void setStock(String stock) {
-        this.stock.set(stock);
-    }
-    public void setProductName(String name) {
-        this.productName.set(name);
-    }
-    public void setProductType(String type) {
-        this.productType.set(type);
-    }
-    public void setPrice(String price) {
-        this.price.set(price);
-    }
-    public void setDate(String date) {
-        this.date.set(date);
-    }
+    public void setProductId(String productId) { this.productId = productId; }
+    public void setProductName(String productName) { this.productName = productName; }
+    public void setProductType(String productType) { this.productType = productType; }
+    public void setPrice(String price) { this.price = price; }
+    public void setStock(String stock) { this.stock = stock; }
+    public void setDate(String date) { this.date = date; }
+    public void setExpiryDate(String expiryDate) { this.expiryDate = expiryDate; }
 }

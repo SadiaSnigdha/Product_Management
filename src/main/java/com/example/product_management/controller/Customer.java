@@ -8,7 +8,6 @@ public class Customer {
     private final StringProperty phone;
     private final StringProperty email;
 
-    // Constructor with arguments
     public Customer(int id, String name, String phone, String email) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
@@ -16,7 +15,6 @@ public class Customer {
         this.email = new SimpleStringProperty(email);
     }
 
-    // No-arg constructor (optional, for JavaFX if needed)
     public Customer() {
         this.id = new SimpleIntegerProperty();
         this.name = new SimpleStringProperty();
@@ -24,7 +22,6 @@ public class Customer {
         this.email = new SimpleStringProperty();
     }
 
-    // Getters
     public int getId() {
         return id.get();
     }
@@ -41,7 +38,6 @@ public class Customer {
         return email.get();
     }
 
-    // Setters
     public void setId(int id) {
         this.id.set(id);
     }
@@ -58,7 +54,6 @@ public class Customer {
         this.email.set(email);
     }
 
-    // Property methods (used by JavaFX TableView bindings)
     public IntegerProperty idProperty() {
         return id;
     }

@@ -17,4 +17,6 @@ module com.example.product_management {
     exports com.example.product_management.controller;
     opens com.example.product_management to javafx.fxml;
     exports com.example.product_management;
+    exports com.example.product_management.DpApply;
+    opens com.example.product_management.DpApply to javafx.fxml;
 }

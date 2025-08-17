@@ -1,6 +1,7 @@
 package com.example.product_management.controller;
 
-import com.example.product_management.controller.DBUtil;
+import com.example.product_management.Utill.DatabaseConnection;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -32,7 +33,7 @@ public class AddCustomerController {
     }
 
     public void initialize() {
-        // No need to connect here anymore
+
     }
 
     @FXML
@@ -47,7 +48,8 @@ public class AddCustomerController {
         }
 
         try {
-            Connection connection = DBUtil.getConnection();
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+
             String query = "INSERT INTO customers (name, email, phone) VALUES (?, ?, ?)";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, name);
@@ -61,12 +63,12 @@ public class AddCustomerController {
                 onCustomerAdded.run();
             }
 
-            stage.close(); // ✅ close window after save
-
+            stage.close();
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert("Database Error", e.getMessage());
         }
+
     }
 
     private void showAlert(String title, String msg) {
