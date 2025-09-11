@@ -16,10 +16,12 @@
             fx:controller="com.example.product_management.controller.AddProductController">
 
     <children>
-        <VBox spacing="20" layoutX="100" layoutY="100" prefWidth="1200" prefHeight="800" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 40;">
+        <VBox spacing="20" layoutX="100" layoutY="100" prefWidth="1200" prefHeight="800"
+              style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 40;">
             <children>
 
-                <Label text="➕ Add Product" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #6a11cb;" />
+                <Label text="➕ Add Product"
+                       style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #6a11cb;" />
 
                 <GridPane hgap="20" vgap="20" prefWidth="1100" prefHeight="600">
                     <columnConstraints>
@@ -29,31 +31,46 @@
 
                     <children>
                         <Label text="Product ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                        <TextField fx:id="productId" promptText="Enter product ID" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                        <TextField fx:id="productId" promptText="Enter product ID"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="1" />
 
                         <Label text="Product Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-                        <TextField fx:id="productName" promptText="Enter product name" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                        <TextField fx:id="productName" promptText="Enter product name"
+                                   GridPane.rowIndex="1" GridPane.columnIndex="1" />
 
                         <Label text="Category:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-                        <TextField fx:id="category" promptText="Enter category" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                        <TextField fx:id="category" promptText="Enter category"
+                                   GridPane.rowIndex="2" GridPane.columnIndex="1" />
 
-                        <Label text="Price ($):" GridPane.rowIndex="3" GridPane.columnIndex="0" />
-                        <TextField fx:id="price" promptText="Enter price" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                        <Label text="Buy Price ($):" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                        <TextField fx:id="buyPrice" promptText="Enter buy price"
+                                   GridPane.rowIndex="3" GridPane.columnIndex="1" />
 
-                        <Label text="Quantity:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
-                        <TextField fx:id="quantity" promptText="Enter quantity" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+                        <Label text="Sell Price ($):" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                        <TextField fx:id="sellPrice" promptText="Enter sell price"
+                                   GridPane.rowIndex="4" GridPane.columnIndex="1" />
 
-                        <Label text="Date:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
-                        <TextField fx:id="date" promptText="Enter adding date (DD-MM-YYYY)" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+                        <Label text="Quantity:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                        <TextField fx:id="quantity" promptText="Enter quantity"
+                                   GridPane.rowIndex="5" GridPane.columnIndex="1" />
 
-                        <Label text="Expire Date:" GridPane.rowIndex="6" GridPane.columnIndex="0" />
-                        <TextField fx:id="expireDate" promptText="Enter expire date (DD-MM-YYYY)" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+                        <Label text="Date:" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                        <TextField fx:id="date" promptText="Enter adding date (DD-MM-YYYY)"
+                                   GridPane.rowIndex="6" GridPane.columnIndex="1" />
+
+                        <Label text="Expire Date:" GridPane.rowIndex="7" GridPane.columnIndex="0" />
+                        <TextField fx:id="expireDate" promptText="Enter expire date (DD-MM-YYYY)"
+                                   GridPane.rowIndex="7" GridPane.columnIndex="1" />
                     </children>
                 </GridPane>
 
                 <HBox spacing="30" style="-fx-alignment: center;">
-                    <Button fx:id="add" text="Add" onAction="#onClickAdd" style="-fx-background-color: #6a11cb; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" prefWidth="140" prefHeight="50" />
-                    <Button fx:id="back" text="Back" onAction="#onClickBack" style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" prefWidth="140" prefHeight="50" />
+                    <Button fx:id="add" text="Add" onAction="#onClickAdd"
+                            style="-fx-background-color: #6a11cb; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"
+                            prefWidth="140" prefHeight="50" />
+                    <Button fx:id="back" text="Back" onAction="#onClickBack"
+                            style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"
+                            prefWidth="140" prefHeight="50" />
                 </HBox>
 
             </children>

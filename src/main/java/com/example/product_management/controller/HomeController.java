@@ -155,6 +155,23 @@ public class HomeController {
     }
 
     @FXML
+    private void onShowReportsClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/product_management/ReportOptions.fxml"));
+            Parent root = loader.load();
+            ReportOptionController reportController = loader.getController();
+            reportController.setStage(stage);
+
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Product Management: Report Option");
+            stage.show();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load View Stock page: " + e.getMessage());
+        }
+    }
+
+    @FXML
     private void onBack() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/product_management/EntryPage.fxml"));

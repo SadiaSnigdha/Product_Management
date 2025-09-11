@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="900.0" spacing="25"
+      style="-fx-background-color: linear-gradient(to right, #e0eafc, #cfdef3);"
+      xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.product_management.controller.ReportActionController">
+
+    <!-- Header Bar -->
+    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="900.0"
+          style="-fx-background-color: #6a11cb; -fx-background-radius: 0 0 20 20;">
+        <Label text="📑 Report Actions"
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white; -fx-padding: 0 0 0 20;" />
+    </HBox>
+
+    <!-- White Card -->
+    <VBox alignment="CENTER" spacing="20" prefWidth="600" prefHeight="400"
+          style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 40;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 6);">
+
+        <Button text="⬇ Download PDF"
+                onAction="#onDownloadPDF"
+                prefWidth="300" prefHeight="60"
+                style="-fx-background-color: #d63384; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20;" />
+
+        <Button text="⬇ Download CSV"
+                onAction="#onDownloadCSV"
+                prefWidth="300" prefHeight="60"
+                style="-fx-background-color: #20c997; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20;" />
+
+        <Button text="📤 Share"
+                onAction="#onShareReport"
+                prefWidth="300" prefHeight="60"
+                style="-fx-background-color: #6610f2; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20;" />
+
+        <Button text="⬅ Back to Home"
+                onAction="#onBackHome"
+                prefWidth="250" prefHeight="50"
+                style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 15;" />
+
+    </VBox>
+
+</VBox>

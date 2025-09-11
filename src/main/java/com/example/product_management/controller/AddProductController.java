@@ -10,17 +10,15 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AddProductController {
 
     @FXML private TextField productId;
     @FXML private TextField productName;
     @FXML private TextField category;
-    @FXML private TextField price;
+    @FXML private TextField buyPrice;
+    @FXML private TextField sellPrice;
     @FXML private TextField quantity;
     @FXML private TextField date;
     @FXML private TextField expireDate;
@@ -58,7 +56,8 @@ public class AddProductController {
         String id = productId.getText().trim();
         String name = productName.getText().trim();
         String categoryValue = category.getText().trim();
-        String priceValue = price.getText().trim();
+        String buyPriceValue = buyPrice.getText().trim();
+        String sellPriceValue = sellPrice.getText().trim();
         String quantityValue = quantity.getText().trim();
         String dateValue = date.getText().trim();
         String expiryValue = expireDate.getText().trim();
@@ -69,23 +68,20 @@ public class AddProductController {
         }
 
         int idInt;
-        double priceDouble;
+        double buyPriceDouble, sellPriceDouble;
         int quantityInt;
 
         try {
             idInt = Integer.parseInt(id);
-            priceDouble = priceValue.isEmpty() ? 0.0 : Double.parseDouble(priceValue);
+            buyPriceDouble = buyPriceValue.isEmpty() ? 0.0 : Double.parseDouble(buyPriceValue);
+            sellPriceDouble = sellPriceValue.isEmpty() ? 0.0 : Double.parseDouble(sellPriceValue);
             quantityInt = quantityValue.isEmpty() ? 0 : Integer.parseInt(quantityValue);
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Input Error", "Product ID, Price, and Quantity must be valid numbers.");
+            showAlert(Alert.AlertType.ERROR, "Input Error", "Product ID, Buy Price, Sell Price, and Quantity must be valid numbers.");
             return;
         }
 
-        Connection conn = null;
-
-        try {
-            conn = getConnection();
-
+        try (Connection conn = getConnection()) {
             // Check product exists
             PreparedStatement checkStmt = conn.prepareStatement("SELECT quantity FROM products WHERE id = ?");
             checkStmt.setInt(1, idInt);
@@ -97,30 +93,33 @@ public class AddProductController {
                 int newQty = existingQty + quantityInt;
 
                 PreparedStatement updateStmt = conn.prepareStatement(
-                        "UPDATE products SET quantity = ?, expiry_date = ? WHERE id = ?");
+                        "UPDATE products SET quantity = ?, expiry_date = ?, buy_price = ?, sell_price = ? WHERE id = ?");
                 updateStmt.setInt(1, newQty);
                 updateStmt.setString(2, expiryValue.isEmpty() ? null : expiryValue);
-                updateStmt.setInt(3, idInt);
+                updateStmt.setDouble(3, buyPriceDouble);
+                updateStmt.setDouble(4, sellPriceDouble);
+                updateStmt.setInt(5, idInt);
+
                 int rowsAffected = updateStmt.executeUpdate();
-
                 if (rowsAffected > 0) {
-                    showAlert(Alert.AlertType.INFORMATION, "Stock Updated", "Existing product quantity has been updated.");
+                    showAlert(Alert.AlertType.INFORMATION, "Stock Updated", "Existing product has been updated.");
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Update Error", "Failed to update product quantity.");
+                    showAlert(Alert.AlertType.ERROR, "Update Error", "Failed to update product.");
                 }
-
                 updateStmt.close();
+
             } else {
                 // Insert new product
                 PreparedStatement insertStmt = conn.prepareStatement(
-                        "INSERT INTO products (id, name, category, price, quantity, date, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                        "INSERT INTO products (id, name, category, buy_price, sell_price, quantity, date, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
                 insertStmt.setInt(1, idInt);
                 insertStmt.setString(2, name);
                 insertStmt.setString(3, categoryValue.isEmpty() ? null : categoryValue);
-                insertStmt.setDouble(4, priceDouble);
-                insertStmt.setInt(5, quantityInt);
-                insertStmt.setString(6, dateValue.isEmpty() ? null : dateValue);
-                insertStmt.setString(7, expiryValue.isEmpty() ? null : expiryValue);
+                insertStmt.setDouble(4, buyPriceDouble);
+                insertStmt.setDouble(5, sellPriceDouble);
+                insertStmt.setInt(6, quantityInt);
+                insertStmt.setString(7, dateValue.isEmpty() ? null : dateValue);
+                insertStmt.setString(8, expiryValue.isEmpty() ? null : expiryValue);
 
                 int rowsAffected = insertStmt.executeUpdate();
                 if (rowsAffected > 0) {
@@ -128,11 +127,10 @@ public class AddProductController {
                 } else {
                     showAlert(Alert.AlertType.ERROR, "Insert Error", "Failed to add new product.");
                 }
-
                 insertStmt.close();
             }
 
-            // Insert into product_entries
+            // Insert into product_entries (log entry)
             PreparedStatement entryStmt = conn.prepareStatement(
                     "INSERT INTO product_entries (product_id, quantity, date) VALUES (?, ?, ?)");
             entryStmt.setInt(1, idInt);
@@ -143,10 +141,9 @@ public class AddProductController {
             if (entryRows == 0) {
                 showAlert(Alert.AlertType.ERROR, "Insert Error", "Failed to add product entry.");
             }
-
             entryStmt.close();
-            checkStmt.close();
             rs.close();
+            checkStmt.close();
 
             clearFields();
 
@@ -178,7 +175,8 @@ public class AddProductController {
         productId.clear();
         productName.clear();
         category.clear();
-        price.clear();
+        buyPrice.clear();
+        sellPrice.clear();
         quantity.clear();
         date.clear();
         expireDate.clear();

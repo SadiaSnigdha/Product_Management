@@ -24,7 +24,8 @@ CREATE TABLE products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     category TEXT,
-    price REAL NOT NULL,
+    buy_price REAL NOT NULL,
+    sell_price REAL NOT NULL,
     quantity INTEGER NOT NULL,
     date TEXT,
     expiry_date TEXT

@@ -27,14 +27,16 @@ import java.time.format.DateTimeParseException;
 public class ProductListController {
 
     @FXML private TableView<Product> productTable;
-    @FXML private TableColumn<Product, String> idColumn;
+    @FXML private TableColumn<Product, Integer> idColumn;
     @FXML private TableColumn<Product, String> nameColumn;
     @FXML private TableColumn<Product, String> categoryColumn;
-    @FXML private TableColumn<Product, String> priceColumn;
-    @FXML private TableColumn<Product, String> quantityColumn;
+    @FXML private TableColumn<Product, Double> buyPriceColumn;
+    @FXML private TableColumn<Product, Double> sellPriceColumn;
+    @FXML private TableColumn<Product, Integer> quantityColumn;
+    @FXML private TableColumn<Product, String> dateColumn;
     @FXML private TableColumn<Product, String> expireDateColumn;
 
-    private ObservableList<Product> products = FXCollections.observableArrayList();
+    private final ObservableList<Product> products = FXCollections.observableArrayList();
     private final ReminderSubject reminderSubject = new ReminderSubject();
     private Stage stage;
 
@@ -44,14 +46,17 @@ public class ProductListController {
 
     @FXML
     public void initialize() {
-
+        // attach observer
         reminderSubject.attach(new ReminderObserver());
 
+        // setup table columns with correct field names
         idColumn.setCellValueFactory(new PropertyValueFactory<>("productId"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("productType"));
-        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        buyPriceColumn.setCellValueFactory(new PropertyValueFactory<>("buyPrice"));
+        sellPriceColumn.setCellValueFactory(new PropertyValueFactory<>("sellPrice"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         expireDateColumn.setCellValueFactory(new PropertyValueFactory<>("expiryDate"));
 
         loadProducts();
@@ -67,28 +72,29 @@ public class ProductListController {
 
             while (rs.next()) {
                 Product product = new Product(
-                        String.valueOf(rs.getInt("id")),
+                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("category"),
-                        String.valueOf(rs.getDouble("price")),
-                        String.valueOf(rs.getInt("quantity")),
+                        rs.getDouble("buy_price"),
+                        rs.getDouble("sell_price"),
+                        rs.getInt("quantity"),
                         rs.getString("date"),
                         rs.getString("expiry_date")
                 );
 
-                // Safe parse expiry date
+                // expiry check
                 LocalDate expiry = safeParseDate(product.getExpiryDate());
-                if (expiry != null && !expiry.isAfter(LocalDate.now())) {
+                if (expiry != null && expiry.isBefore(LocalDate.now())) {
                     reminderSubject.notifyObservers(product,
-                            "The product '" + product.getProductName() + "' has expired on " + product.getExpiryDate() + ". Consider deleting it.");
+                            "⚠ The product '" + product.getProductName() +
+                                    "' has expired on " + product.getExpiryDate() + ". Consider deleting it.");
                 }
 
-
-                // Check for zero quantity
-                int qty = safeParseInt(product.getStock());
-                if (qty <= 1) {
+                // stock check
+                if (product.getQuantity() <= 1) {
                     reminderSubject.notifyObservers(product,
-                            "The product '" + product.getProductName() + "' is low on stock (quantity: " + qty + "). Consider restocking.");
+                            "⚠ The product '" + product.getProductName() +
+                                    "' is low on stock (quantity: " + product.getQuantity() + "). Consider restocking.");
                 }
 
                 products.add(product);
@@ -100,11 +106,10 @@ public class ProductListController {
         }
     }
 
-
     private LocalDate safeParseDate(String rawDate) {
         if (rawDate == null || rawDate.isBlank()) return null;
 
-        String[] patterns = {"d-M-uuuu", "dd-MM-uuuu", "d/M/uuuu", "dd/MM/uuuu"};
+        String[] patterns = {"d-M-uuuu", "dd-MM-uuuu", "d/M/uuuu", "dd/MM/uuuu", "uuuu-MM-dd"};
         for (String pattern : patterns) {
             try {
                 return LocalDate.parse(rawDate.trim(), DateTimeFormatter.ofPattern(pattern));
@@ -113,11 +118,6 @@ public class ProductListController {
 
         System.err.println("Unrecognized date format: " + rawDate);
         return null;
-    }
-
-    private int safeParseInt(String s) {
-        try { return Integer.parseInt(s.trim()); }
-        catch (Exception e) { return 0; }
     }
 
     @FXML

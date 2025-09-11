@@ -1,6 +1,7 @@
 package com.example.product_management.controller;
 
 import com.example.product_management.Utill.DatabaseConnection;
+import com.example.product_management.controller.OrderHistoryDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -62,47 +63,47 @@ public class OrderHistoryController {
     @FXML
     private TableColumn<ProductOrderSummary, Integer> quantityColumn;
 
-    private Connection getConnection() throws SQLException {
-        Connection conn = DatabaseConnection.getInstance().getConnection();
-        if (conn.isClosed()) {
-            throw new SQLException("Database connection is closed");
-        }
-        return conn;
-    }
-
-    private ObservableList<ProductOrderSummary> getOrderHistory() throws SQLException {
-        ObservableList<ProductOrderSummary> list = FXCollections.observableArrayList();
-        String sql = """
-            SELECT 
-                c.name AS customer_name,
-                c.phone AS phone_number,
-                o.order_date AS order_date,
-                p.id AS product_id,
-                p.name AS product_name,
-                oi.quantity AS quantity
-            FROM order_items oi
-            JOIN orders o ON oi.order_id = o.id
-            JOIN customers c ON o.customer_id = c.id
-            JOIN products p ON oi.product_id = p.id
-            ORDER BY o.order_date DESC;
-        """;
-
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
-                list.add(new ProductOrderSummary(
-                        rs.getString("customer_name"),
-                        rs.getString("phone_number"),
-                        rs.getString("order_date"),
-                        rs.getInt("product_id"),
-                        rs.getString("product_name"),
-                        rs.getInt("quantity")
-                ));
-            }
-        }
-        return list;
-    }
+//    private Connection getConnection() throws SQLException {
+//        Connection conn = DatabaseConnection.getInstance().getConnection();
+//        if (conn.isClosed()) {
+//            throw new SQLException("Database connection is closed");
+//        }
+//        return conn;
+//    }
+//
+//    private ObservableList<ProductOrderSummary> getOrderHistory() throws SQLException {
+//        ObservableList<ProductOrderSummary> list = FXCollections.observableArrayList();
+//        String sql = """
+//            SELECT
+//                c.name AS customer_name,
+//                c.phone AS phone_number,
+//                o.order_date AS order_date,
+//                p.id AS product_id,
+//                p.name AS product_name,
+//                oi.quantity AS quantity
+//            FROM order_items oi
+//            JOIN orders o ON oi.order_id = o.id
+//            JOIN customers c ON o.customer_id = c.id
+//            JOIN products p ON oi.product_id = p.id
+//            ORDER BY o.order_date DESC;
+//        """;
+//
+//        try (Connection conn = getConnection();
+//             Statement stmt = conn.createStatement();
+//             ResultSet rs = stmt.executeQuery(sql)) {
+//            while (rs.next()) {
+//                list.add(new ProductOrderSummary(
+//                        rs.getString("customer_name"),
+//                        rs.getString("phone_number"),
+//                        rs.getString("order_date"),
+//                        rs.getInt("product_id"),
+//                        rs.getString("product_name"),
+//                        rs.getInt("quantity")
+//                ));
+//            }
+//        }
+//        return list;
+//    }
 
     @FXML
     private void initialize() {
@@ -114,7 +115,7 @@ public class OrderHistoryController {
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         try {
-            productOrderTable.setItems(getOrderHistory());
+            productOrderTable.setItems(OrderHistoryDAO.getOrderHistory());
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to load order history: " + e.getMessage());
         }
