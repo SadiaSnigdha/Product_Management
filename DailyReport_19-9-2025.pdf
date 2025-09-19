@@ -1,0 +1,6 @@
+Customer,Phone,Date,Product,Quantity,Price,Total,Profit
+Araf,01815090987,2025-09-19 13:20:31,carrot,10,55.0,550.0,50.0
+Araf,01815090987,2025-09-19 13:20:31,Dove,2,350.0,700.0,100.0
+sadia,01848156590,2025-09-19 06:13:54,iphn,1,1300.0,1300.0,66.0
+
+Total Amount: 2550.0, Total Profit: 216.0

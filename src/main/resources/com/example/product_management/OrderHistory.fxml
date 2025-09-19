@@ -12,14 +12,13 @@
 
     <children>
 
-        <!-- Header -->
+
         <VBox layoutX="0" layoutY="0" prefHeight="100.0" prefWidth="1400.0" style="-fx-background-color: #6a11cb; -fx-background-radius: 0 0 20 20;">
             <children>
                 <Label alignment="CENTER" prefHeight="100.0" prefWidth="1400.0" style="-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold;" text="📦 Customer Purchase History" />
             </children>
         </VBox>
 
-        <!-- Table -->
         <TableView fx:id="productOrderTable" layoutX="50.0" layoutY="130.0" prefHeight="650.0" prefWidth="1300.0">
             <columns>
                 <TableColumn fx:id="customerNameColumn" prefWidth="220.0" text="Customer Name" />
@@ -43,7 +42,6 @@
             </effect>
         </TableView>
 
-        <!-- Back Button -->
         <Button fx:id="back" layoutX="1230.0" layoutY="823.0" onAction="#onClickBack" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" text="⬅ Back" />
     </children>
 </AnchorPane>

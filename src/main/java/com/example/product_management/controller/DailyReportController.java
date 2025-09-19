@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -51,15 +50,13 @@ public class DailyReportController {
         System.out.println("📑 Generating report for date: " + date);
 
         try {
-            // DB থেকে ডেটা আনা
             ObservableList<Product> products = ProductDAO.getAllProducts();
-            ObservableList<ProductOrderSummary> orders = OrderHistoryDAO.getOrderHistoryByDate(date); // ✅ LocalDate পাঠাচ্ছি
+            ObservableList<ProductOrderSummary> orders = OrderHistoryDAO.getOrderHistoryByDate(date);
 
             if (orders.isEmpty()) {
                 System.out.println("⚠ No orders found for " + date);
             }
 
-            // CSV + PDF Report তৈরি
             String fileName = "DailyReport_" + date.format(java.time.format.DateTimeFormatter.ofPattern("d-M-yyyy"));
 
             Report dailyCSV = new DailyReport(orders, products, new CSVFormatter());
@@ -68,14 +65,13 @@ public class DailyReportController {
             Report dailyPDF = new DailyReport(orders, products, new PDFFormatter());
             dailyPDF.generate(fileName);
 
-            System.out.println("✅ Reports generated successfully for " + date);
+            System.out.println("Reports generated successfully for " + date);
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("❌ Failed to generate reports: " + e.getMessage());
+            System.err.println("Failed to generate reports: " + e.getMessage());
         }
 
-        // ReportAction.fxml এ যাবে
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/product_management/ReportActionPage.fxml"));
             Parent root = loader.load();

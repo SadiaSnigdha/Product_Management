@@ -3,7 +3,6 @@ package com.example.product_management.DpApply.Report;
 import java.io.FileWriter;
 import java.io.IOException;
 
-// CSV Formatter
 public class CSVFormatter implements ReportFormatter {
     @Override
     public void generateFile(String reportContent, String fileName) {

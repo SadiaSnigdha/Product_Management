@@ -1,14 +1,14 @@
 package com.example.product_management.controller;
 
 public class Product {
-    private int productId;          // INTEGER PRIMARY KEY
-    private String productName;     // TEXT NOT NULL
-    private String category;        // TEXT
-    private double buyPrice;        // REAL NOT NULL
-    private double sellPrice;       // REAL NOT NULL
-    private int quantity;           // INTEGER NOT NULL
-    private String date;            // TEXT
-    private String expiryDate;      // TEXT
+    private int productId;
+    private String productName;
+    private String category;
+    private double buyPrice;
+    private double sellPrice;
+    private int quantity;
+    private String date;
+    private String expiryDate;
 
     public Product(int productId, String productName, String category,
                    double buyPrice, double sellPrice, int quantity,
@@ -23,7 +23,7 @@ public class Product {
         this.expiryDate = expiryDate;
     }
 
-    // Getters
+
     public int getProductId() { return productId; }
     public String getProductName() { return productName; }
     public String getCategory() { return category; }
@@ -33,7 +33,7 @@ public class Product {
     public String getDate() { return date; }
     public String getExpiryDate() { return expiryDate; }
 
-    // Setters
+
     public void setProductId(int productId) { this.productId = productId; }
     public void setProductName(String productName) { this.productName = productName; }
     public void setCategory(String category) { this.category = category; }

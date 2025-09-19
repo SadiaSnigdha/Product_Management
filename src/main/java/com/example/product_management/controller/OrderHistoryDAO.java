@@ -13,7 +13,6 @@ import java.time.LocalDate;
 
 public class OrderHistoryDAO {
 
-    // সব অর্ডার আনবে
     public static ObservableList<ProductOrderSummary> getOrderHistory() throws SQLException {
         ObservableList<ProductOrderSummary> list = FXCollections.observableArrayList();
         String sql = """
@@ -49,7 +48,6 @@ public class OrderHistoryDAO {
         return list;
     }
 
-    // নির্দিষ্ট তারিখের অর্ডার আনবে
     public static ObservableList<ProductOrderSummary> getOrderHistoryByDate(LocalDate date) throws SQLException {
         ObservableList<ProductOrderSummary> list = FXCollections.observableArrayList();
         String sql = """
@@ -71,7 +69,6 @@ public class OrderHistoryDAO {
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // ✅ LocalDate → yyyy-MM-dd (default format)
             stmt.setString(1, date.toString());
 
             ResultSet rs = stmt.executeQuery();

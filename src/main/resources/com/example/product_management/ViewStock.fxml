@@ -12,14 +12,12 @@
 <AnchorPane prefHeight="900.0" prefWidth="1400.0" style="-fx-background-color: linear-gradient(to bottom right, #e0eafc, #cfdef3);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.product_management.controller.StockController">
     <children>
 
-        <!-- Header -->
         <VBox prefHeight="92.0" prefWidth="1400.0" style="-fx-background-color: #6a11cb; -fx-background-radius: 0 0 20 20;">
             <children>
                 <Label prefHeight="92.0" prefWidth="400.0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 26px;" text="📦 View Stock" />
             </children>
         </VBox>
 
-        <!-- Table -->
         <VBox layoutX="27.0" layoutY="107.0" prefHeight="695.0" prefWidth="1348.0">
             <children>
                 <TableView fx:id="viewStock" prefHeight="694.0" prefWidth="1348.0">
@@ -37,7 +35,6 @@
             </children>
         </VBox>
 
-        <!-- Back Button -->
         <Button fx:id="back" layoutX="1269.0" layoutY="829.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="46.0" prefWidth="100.0" style="-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" text="Back">
             <font>
                 <Font name="Arial Bold" size="17.0" />

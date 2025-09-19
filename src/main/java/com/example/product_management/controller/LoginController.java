@@ -87,13 +87,11 @@ public class LoginController implements Controller {
                     if (BCrypt.checkpw(enteredPassword, storedHash)) {
                         showAlert(Alert.AlertType.INFORMATION, "Login Successful", "Welcome, " + role + "!");
 
-                        // Store in singleton session
                         Singleton session = Singleton.getInstance();
                         session.setUserId(userId);
                         session.setUserRole(role);
                         session.setUserName(enteredUsername);
 
-                        // Log login history
                         try (PreparedStatement insertStmt = conn.prepareStatement(
                                 "INSERT INTO login_history (user_id) VALUES (?)")) {
                             insertStmt.setInt(1, userId);

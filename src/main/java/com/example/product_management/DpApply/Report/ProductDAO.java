@@ -4,7 +4,6 @@ import com.example.product_management.controller.Product;
 import com.example.product_management.Utill.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +11,6 @@ import java.sql.Statement;
 
 public class ProductDAO {
 
-    // Static getConnection method
     private static Connection getConnection() throws SQLException {
         Connection conn = DatabaseConnection.getInstance().getConnection();
         if (conn == null || conn.isClosed()) {
@@ -21,7 +19,6 @@ public class ProductDAO {
         return conn;
     }
 
-    // Static method for fetching all products
     public static ObservableList<Product> getAllProducts() {
         ObservableList<Product> list = FXCollections.observableArrayList();
         String sql = "SELECT * FROM products";

@@ -34,10 +34,10 @@ public class DailyReport extends Report {
                 }
             }
 
-            if (matchedProduct == null) continue; // যদি product না মেলে, skip করবে
+            if (matchedProduct == null) continue;
 
-            double price = matchedProduct.getSellPrice();   // sell price from Product
-            double buyPrice = matchedProduct.getBuyPrice(); // buy price from Product
+            double price = matchedProduct.getSellPrice();
+            double buyPrice = matchedProduct.getBuyPrice();
             double total = price * order.getQuantity();
             double profit = (price - buyPrice) * order.getQuantity();
 

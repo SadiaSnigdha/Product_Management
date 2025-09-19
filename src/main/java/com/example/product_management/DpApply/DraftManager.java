@@ -17,7 +17,7 @@ public class DraftManager {
     }
 
     public void saveDraft(String customerPhone, CartMemento memento) {
-        drafts.put(customerPhone.trim(), memento); // ফোন নাম্বার থেকে space remove
+        drafts.put(customerPhone.trim(), memento);
     }
 
     public boolean hasDraft(String customerPhone) {

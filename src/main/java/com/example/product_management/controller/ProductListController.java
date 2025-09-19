@@ -46,10 +46,8 @@ public class ProductListController {
 
     @FXML
     public void initialize() {
-        // attach observer
         reminderSubject.attach(new ReminderObserver());
 
-        // setup table columns with correct field names
         idColumn.setCellValueFactory(new PropertyValueFactory<>("productId"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));

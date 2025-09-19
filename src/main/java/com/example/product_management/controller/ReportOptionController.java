@@ -3,7 +3,6 @@ package com.example.product_management.controller;
 import com.example.product_management.Utill.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -31,7 +30,6 @@ public class ReportOptionController {
         }
     }
 
-    // Daily Report নির্বাচন
     public void onDailyReportClick(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/product_management/DailyReportPage.fxml"));

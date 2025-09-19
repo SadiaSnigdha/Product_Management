@@ -15,30 +15,25 @@
         <Insets bottom="30" left="30" right="30" top="30" />
     </padding>
 
-    <!-- Main White Card -->
     <VBox alignment="CENTER" prefHeight="389.0" prefWidth="540.0" spacing="20"
           style="-fx-padding: 40 30 40 30; -fx-background-color: white; -fx-background-radius: 15;
                  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
 
-        <!-- Title -->
         <Label text="📑 Choose Report Type"
                style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #333;" />
 
-        <!-- Daily Report Button -->
         <Button text="📅 Daily Report"
                 onAction="#onDailyReportClick"
                 prefWidth="300" prefHeight="60"
                 style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 16px;
                        -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);" />
 
-        <!-- Monthly Report Button -->
         <Button text="🗓 Monthly Report"
                 onAction="#onMonthlyReportClick"
                 prefWidth="300" prefHeight="60"
                 style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 16px;
                        -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);" />
 
-        <!-- Back Button -->
         <Button text="⬅ Back"
                 onAction="#onBackClick"
                 prefWidth="200" prefHeight="50"

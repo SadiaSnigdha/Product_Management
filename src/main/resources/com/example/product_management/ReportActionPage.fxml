@@ -12,14 +12,12 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.product_management.controller.ReportActionController">
 
-    <!-- Header Bar -->
     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="900.0"
           style="-fx-background-color: #6a11cb; -fx-background-radius: 0 0 20 20;">
         <Label text="📑 Report Actions"
                style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white; -fx-padding: 0 0 0 20;" />
     </HBox>
 
-    <!-- White Card -->
     <VBox alignment="CENTER" spacing="20" prefWidth="600" prefHeight="400"
           style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 40;
                  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 6);">

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static DatabaseConnection instance; // singleton
+    private static DatabaseConnection instance;
     private Connection connection;
     private final String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/data.db";
 
@@ -13,7 +13,6 @@ public class DatabaseConnection {
         openNewConnection();
     }
 
-    // নতুন connection ওপেন করার জন্য আলাদা মেথড
     private void openNewConnection() throws SQLException {
         try {
             connection = DriverManager.getConnection(url);
@@ -31,7 +30,6 @@ public class DatabaseConnection {
     }
 
     public Connection getConnection() throws SQLException {
-        // যদি connection null বা বন্ধ থাকে, নতুন connection তৈরি করো
         if (connection == null || connection.isClosed()) {
             System.out.println("Reopening closed database connection...");
             openNewConnection();

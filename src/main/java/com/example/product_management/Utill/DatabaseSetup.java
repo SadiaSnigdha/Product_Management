@@ -16,7 +16,6 @@ public class DatabaseSetup {
         try {
             Connection conn = DatabaseConnection.getInstance().getConnection();
 
-            // Read SQL file
             StringBuilder sqlBuilder = new StringBuilder();
             try (BufferedReader br = new BufferedReader(new FileReader(sqlFilePath))) {
                 String line;

@@ -393,6 +393,7 @@ public class CreateSalesController {
         };
 
         task.setOnSucceeded(e -> {
+            draftManager.clearDraft(phone);
             cartItems.clear();
             updateTotal();
             showAlert("Success", "Sale completed and saved successfully.");
@@ -420,14 +421,13 @@ public class CreateSalesController {
             return;
         }
 
-        // Customer কে খুঁজে দেখা
         Customer customer = findCustomerByPhone(phone);
         if (customer == null) {
             showAlert("Error", "Customer not found. Please add customer first.");
             return;
         }
 
-        draftManager.saveDraft(customer.getPhone(), new CartMemento(List.copyOf(cartItems)));
+        draftManager.saveDraft(phone, new CartMemento(List.copyOf(cartItems)));
         this.currentCustomer = customer;
         showAlert("Success", "Draft saved successfully for customer: " + customer.getName());
     }
@@ -488,4 +488,3 @@ public class CreateSalesController {
         alert.showAndWait();
     }
 }
-

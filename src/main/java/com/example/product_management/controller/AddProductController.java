@@ -130,7 +130,6 @@ public class AddProductController {
                 insertStmt.close();
             }
 
-            // Insert into product_entries (log entry)
             PreparedStatement entryStmt = conn.prepareStatement(
                     "INSERT INTO product_entries (product_id, quantity, date) VALUES (?, ?, ?)");
             entryStmt.setInt(1, idInt);
