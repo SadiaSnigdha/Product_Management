@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 public class OrderHistoryDAO {
 
@@ -70,6 +71,46 @@ public class OrderHistoryDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, date.toString());
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                list.add(new ProductOrderSummary(
+                        rs.getString("customer_name"),
+                        rs.getString("phone_number"),
+                        rs.getString("order_date"),
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getInt("quantity")
+                ));
+            }
+        }
+        return list;
+    }
+
+    public static ObservableList<ProductOrderSummary> getOrderHistoryByMonth(YearMonth month) throws SQLException {
+        ObservableList<ProductOrderSummary> list = FXCollections.observableArrayList();
+        String sql = """
+            SELECT\s
+                                           c.name AS customer_name,
+                                           c.phone AS phone_number,
+                                           o.order_date AS order_date,
+                                           p.id AS product_id,
+                                           p.name AS product_name,
+                                           oi.quantity AS quantity
+                                       FROM order_items oi
+                                       JOIN orders o ON oi.order_id = o.id
+                                       JOIN customers c ON o.customer_id = c.id
+                                       JOIN products p ON oi.product_id = p.id
+                                       WHERE strftime('%m', o.order_date) = ? AND strftime('%Y', o.order_date) = ?
+                                       ORDER BY o.order_date DESC;
+        """;
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, month.getMonthValue());
+            stmt.setInt(2, month.getYear());
 
             ResultSet rs = stmt.executeQuery();
 

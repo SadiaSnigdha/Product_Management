@@ -1,11 +1,11 @@
 package com.example.product_management.DpApply;
 
-import com.example.product_management.controller.Product;
+import com.example.product_management.controller.StockEntry;
 import javafx.scene.control.Alert;
 
 public class ReminderObserver implements Observer {
     @Override
-    public void update(Product product, String message) {
+    public void update(StockEntry product, String message) {
         showAlert(Alert.AlertType.WARNING, "Product Reminder", message);
     }
 

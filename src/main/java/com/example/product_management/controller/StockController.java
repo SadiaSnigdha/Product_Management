@@ -1,6 +1,9 @@
 package com.example.product_management.controller;
 
+import com.example.product_management.DpApply.ReminderObserver;
+import com.example.product_management.DpApply.ReminderSubject;
 import com.example.product_management.Utill.DatabaseConnection;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,103 +19,118 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class StockController {
 
-    @FXML
-    private TableView<StockEntry> viewStock;
+    @FXML private TableView<StockEntry> productTable;
+    @FXML private TableColumn<StockEntry, Integer> idColumn;
+    @FXML private TableColumn<StockEntry, String> nameColumn;
+    @FXML private TableColumn<StockEntry, String> categoryColumn;
+    @FXML private TableColumn<StockEntry, Double> buyPriceColumn;
+    @FXML private TableColumn<StockEntry, Double> sellPriceColumn;
+    @FXML private TableColumn<StockEntry, Integer> quantityColumn;
+    @FXML private TableColumn<StockEntry, String> dateColumn;
+    @FXML private TableColumn<StockEntry, String> expireDateColumn;
 
-    @FXML
-    private TableColumn<StockEntry, Integer> idColumn;
-
-    @FXML
-    private TableColumn<StockEntry, Integer> productIdColumn;
-
-    @FXML
-    private TableColumn<StockEntry, String> nameColumn;
-
-    @FXML
-    private TableColumn<StockEntry, Integer> quantityColumn;
-
-    @FXML
-    private TableColumn<StockEntry, String> dateColumn;
-
-    private final ObservableList<StockEntry> stockEntries = FXCollections.observableArrayList();
-
+    private final ObservableList<StockEntry> products = FXCollections.observableArrayList();
+    private final ReminderSubject reminderSubject = new ReminderSubject();
     private Stage stage;
-
-    public String getTitle() {
-        return "Product Management: View Stock";
-    }
 
     public void setStage(Stage stage) {
         this.stage = stage;
-        if (this.stage != null) {
-            this.stage.setTitle(getTitle());
-            this.stage.setOnCloseRequest(event -> {
-                try {
-                    DatabaseConnection.getInstance().closeConnection();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-    }
-
-    private Connection getConnection() throws SQLException {
-        Connection conn = DatabaseConnection.getInstance().getConnection();
-        if (conn.isClosed()) {
-            throw new SQLException("Database connection is closed");
-        }
-        return conn;
-    }
-
-    private void loadStockEntriesFromDB() throws SQLException {
-        stockEntries.clear();
-        String sql = """
-            SELECT 
-                pe.id, 
-                pe.product_id, 
-                p.name AS product_name, 
-                pe.quantity, 
-                pe.date
-            FROM product_entries pe
-            JOIN products p ON pe.product_id = p.id
-            ORDER BY pe.id ASC;
-        """;
-
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
-                StockEntry entry = new StockEntry(
-                        rs.getInt("id"),
-                        rs.getInt("product_id"),
-                        rs.getString("product_name"),
-                        rs.getInt("quantity"),
-                        rs.getString("date")
-                );
-                stockEntries.add(entry);
-            }
-            viewStock.setItems(stockEntries);
-        }
     }
 
     @FXML
     public void initialize() {
-        idColumn.setCellValueFactory(data -> data.getValue().idProperty().asObject());
-        productIdColumn.setCellValueFactory(data -> data.getValue().productIdProperty().asObject());
-        nameColumn.setCellValueFactory(data -> data.getValue().productNameProperty());
-        quantityColumn.setCellValueFactory(data -> data.getValue().quantityProperty().asObject());
-        dateColumn.setCellValueFactory(data -> data.getValue().dateProperty());
+        reminderSubject.attach(new ReminderObserver());
 
-        try {
-            loadStockEntriesFromDB();
-        } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load stock entries: " + e.getMessage());
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        buyPriceColumn.setCellValueFactory(new PropertyValueFactory<>("buyPrice"));
+        sellPriceColumn.setCellValueFactory(new PropertyValueFactory<>("sellPrice"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        expireDateColumn.setCellValueFactory(new PropertyValueFactory<>("expiryDate"));
+
+        loadProducts();
+        productTable.setItems(products);
+    }
+
+    private void loadProducts() {
+        products.clear();
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM products")) {
+
+            while (rs.next()) {
+                StockEntry product = new StockEntry(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("category"),
+                        rs.getDouble("buy_price"),
+                        rs.getDouble("sell_price"),
+                        rs.getInt("quantity"),
+                        rs.getString("date"),
+                        rs.getString("expiry_date")
+                );
+
+                // expiry check
+                LocalDate expiry = safeParseDate(product.getExpiryDate());
+                if (expiry != null && expiry.isBefore(LocalDate.now())) {
+                    reminderSubject.notifyObservers(product,
+                            "⚠ The product '" + product.getProductName() +
+                                    "' has expired on " + expiry + ". Consider deleting it.");
+                }
+
+                // stock check
+                if (product.getQuantity() <= 1) {
+                    reminderSubject.notifyObservers(product,
+                            "⚠ The product '" + product.getProductName() +
+                                    "' is low on stock (quantity: " + product.getQuantity() + "). Consider restocking.");
+                }
+
+                products.add(product);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to load products: " + e.getMessage());
         }
+    }
+
+    private LocalDate safeParseDate(String rawDate) {
+        if (rawDate == null || rawDate.isBlank()) return null;
+
+        rawDate = rawDate.trim();
+
+        String[] patterns = {
+                "d-M-uuuu", "dd-MM-uuuu", "d/M/uuuu", "dd/MM/uuuu", "uuuu-MM-dd"
+        };
+        for (String pattern : patterns) {
+            try {
+                return LocalDate.parse(rawDate, DateTimeFormatter.ofPattern(pattern));
+            } catch (DateTimeParseException ignored) {}
+        }
+
+        String[] yyPatterns = {"d-M-yy", "dd-MM-yy", "d/M/yy", "dd/MM/yy", "yy-MM-dd"};
+        for (String pattern : yyPatterns) {
+            try {
+                LocalDate parsed = LocalDate.parse(rawDate, DateTimeFormatter.ofPattern(pattern));
+                if (parsed.getYear() < 100) {
+                    return parsed.withYear(2000 + parsed.getYear());
+                }
+                return parsed;
+            } catch (DateTimeParseException ignored) {}
+        }
+
+        System.err.println("Unrecognized date format: " + rawDate);
+        return null;
     }
 
     @FXML

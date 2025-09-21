@@ -43,18 +43,18 @@ public class DailyReportController {
     public void onGenerateReport(ActionEvent event) throws IOException {
         LocalDate date = datePicker.getValue();
         if (date == null) {
-            System.out.println("⚠ Please select a date!");
+            System.out.println("Please select a date!");
             return;
         }
 
-        System.out.println("📑 Generating report for date: " + date);
+        System.out.println("Generating report for date: " + date);
 
         try {
-            ObservableList<Product> products = ProductDAO.getAllProducts();
+            ObservableList<StockEntry> products = ProductDAO.getAllProducts();
             ObservableList<ProductOrderSummary> orders = OrderHistoryDAO.getOrderHistoryByDate(date);
 
             if (orders.isEmpty()) {
-                System.out.println("⚠ No orders found for " + date);
+                System.out.println("No orders found for " + date);
             }
 
             String fileName = "DailyReport_" + date.format(java.time.format.DateTimeFormatter.ofPattern("d-M-yyyy"));

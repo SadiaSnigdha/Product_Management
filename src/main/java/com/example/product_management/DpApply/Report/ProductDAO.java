@@ -1,6 +1,6 @@
 package com.example.product_management.DpApply.Report;
 
-import com.example.product_management.controller.Product;
+import com.example.product_management.controller.StockEntry;
 import com.example.product_management.Utill.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,8 +19,8 @@ public class ProductDAO {
         return conn;
     }
 
-    public static ObservableList<Product> getAllProducts() {
-        ObservableList<Product> list = FXCollections.observableArrayList();
+    public static ObservableList<StockEntry> getAllProducts() {
+        ObservableList<StockEntry> list = FXCollections.observableArrayList();
         String sql = "SELECT * FROM products";
 
         try (Connection conn = getConnection();
@@ -28,7 +28,7 @@ public class ProductDAO {
              ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
-                list.add(new Product(
+                list.add(new StockEntry(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("category"),

@@ -4,14 +4,14 @@ import com.example.product_management.controller.StockEntry;
 import com.example.product_management.controller.ProductOrderSummary;
 import javafx.collections.ObservableList;
 
-public class DailyReport extends Report {
+public class MonthlyReport extends Report {
 
     private ObservableList<ProductOrderSummary> orderList;
     private ObservableList<StockEntry> productList;
 
-    public DailyReport(ObservableList<ProductOrderSummary> orderList,
-                       ObservableList<StockEntry> productList,
-                       ReportFormatter formatter) {
+    public MonthlyReport(ObservableList<ProductOrderSummary> orderList,
+                         ObservableList<StockEntry> productList,
+                         ReportFormatter formatter) {
         super(formatter);
         this.orderList = orderList;
         this.productList = productList;

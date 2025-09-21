@@ -72,9 +72,9 @@ public class HomeController {
     @FXML
     private void onProductListClick() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/product_management/ProductList.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/product_management/ProductL.fxml"));
             Parent root = loader.load();
-            ProductListController productListController = loader.getController();
+            ProductLController productListController = loader.getController();
             productListController.setStage(stage);
 
             Scene scene = new Scene(root);

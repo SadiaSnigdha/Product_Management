@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class ReportActionController {
+    private String reportMonth;
+    private String reportYear;
 
     private Stage stage;
     public String getTitle() {
@@ -38,7 +40,13 @@ public class ReportActionController {
 
     public void setReportDate(LocalDate date) {
         this.reportDate = date;
-        System.out.println("📅 Report Date set to: " + date);
+        System.out.println("Report Date set to: " + date);
+    }
+
+    public void setReportMonth(String month, String year) {
+        this.reportMonth = month;
+        this.reportYear = year;
+        System.out.println("Report Month set to: " + month + " " + year);
     }
 
 

@@ -48,7 +48,20 @@ public class ReportOptionController {
     }
 
     public void onMonthlyReportClick(ActionEvent event) throws IOException {
-        System.out.println("Monthly Report Clicked (To be implemented)");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/product_management/MonthlyReport.fxml"));
+            Parent root = loader.load();
+
+            MonthlyReportController home = loader.getController();
+            home.setStage(stage);
+
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Product Management: Monthly Report");
+            stage.show();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load  Monthly report page: " + e.getMessage());
+        }
     }
 
     public void onBackClick(ActionEvent event) throws IOException {

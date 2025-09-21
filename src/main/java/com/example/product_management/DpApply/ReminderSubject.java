@@ -1,6 +1,6 @@
 package com.example.product_management.DpApply;
 
-import com.example.product_management.controller.Product;
+import com.example.product_management.controller.StockEntry;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class ReminderSubject implements Subject {
 
 
     @Override
-    public void notifyObservers(Product product, String message) {
+    public void notifyObservers(StockEntry product, String message) {
         for (Observer observer : observers) {
             observer.update(product, message);
         }
